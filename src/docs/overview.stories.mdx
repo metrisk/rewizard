@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='Getting Started|Overview' component={null} />
+
+# Overview
+
+Forms can be a bit fiddly for those new to React, common gotchas include **"why does my input reset itself?!"** or **"why can't I type in my input?!"** or **"why is my form state one step behind?!"**. ReWizard helps you to get forms setup quickly without having to worry about such issues so you can focus on what forms are meant for - collecting data! All collected information is stored in a single, easy-to-access state for you to do whatever you want with. 
+
+It also has advanced features for managing **multiple steps**, **conditional select fields**, **validation**, **conditional routes** and more. If you prefer learning by example, we recommend getting stuck in [here](/rewizard/?path=/docs/examples-linear-forms--single-step), but for the theory-nerds out there, here is a brief overview of how it works:
+
+1. The [Form](/rewizard/?path=/docs/components-form--page) component is the main form wrapper, acting as a store for the collected data. It takes care of validation, routing, conditional rendering and more.
+
+2. The [Step](/rewizard/?path=/docs/components-step--page) component is optional but when used it acts as a container for grouping fields, allowing you to construct forms with multiple steps.
+
+3. The [Field](/rewizard/?path=/docs/components-field--page) component is a wrapper for each of your `<Input />`s, connecting them to the main Form context.
+
+4. The [Input](/rewizard/?path=/docs/components-input--page) component is your own controlled input component. The only requirement here is that your input must consume the `value` and `onChange` props.
+
+5. The data from the form is passed to your `onSubmit` function, supplied as part of the config passed to the form.
+
+And that's really all there is to it! Hopefully you can find an [example](/rewizard/?path=/docs/examples-linear-forms--single-step) that closely fits your use case. Enjoy!

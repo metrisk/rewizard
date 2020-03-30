@@ -1,0 +1,252 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import { Form } from '../index'
+import { Step } from '../index'
+import { Field } from '../index'
+import { Input } from '../components/Input'
+import { Select } from '../components/Select'
+
+<Meta title='Examples|Using Config' component={null} />
+
+# Using Config
+
+Using a "config" array and `map()` produces the same results as rendering fields individually - it is just a more concise way of rendering everything.
+
+## Single Step
+
+The general setup is the same as not using a config, with [form](/rewizard/?path=/docs/components-form--page) as the wrapper. But instead of adding our [field](/rewizard/?path=/docs/components-field--page) components individually, we simply `map()` over our config to render them and pass our props through.
+
+#### Example Config
+```
+const fields = [
+  {
+    id: 'name',
+    required: true,
+    props: {
+      label: 'Name'
+    }
+  }, 
+  {
+    id: 'age',
+    required: true,
+    props: {
+      label: 'Age',
+      type: 'number'
+    }
+  }, 
+  {
+    id: 'gender',
+    required: true,
+    props: {
+      label: 'Gender',
+      type: 'select',
+      options: [
+        { value: 'male', label: 'Male' },
+        { value: 'female', label: 'Female' },
+      ]
+    }
+  }
+]
+```
+
+#### Result 
+Enter some values and click submit to see the final form object.
+
+<Preview>
+  <Story name='Single-Step'>
+    {() => {
+      const fields = [
+        {
+          id: 'name',
+          required: true,
+          props: {
+            label: 'Name'
+          }
+        },
+        {
+          id: 'age',
+          required: true,
+          props: {
+            label: 'Age',
+            type: 'number'
+          }
+        },
+        {
+          id: 'gender',
+          required: true,
+          props: {
+            label: 'Gender',
+            type: 'select',
+            options: [
+              { value: 'male', label: 'Male' },
+              { value: 'female', label: 'Female' },
+            ]
+          }
+        }
+      ]
+      return (
+        <Form onSubmit={(formData) => alert(JSON.stringify(formData))}>
+          {({ valid, handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              {fields.map(({ props, ...other }) => (
+                <Field key={`field-${other.id}`} {...other}>{(field) => props.type === 'select' 
+                  ? <Select {...props} {...field} /> 
+                  : <Input {...props} {...field} />}
+                </Field>
+              ))}
+              <p style={{ color: valid ? 'green' : 'red'}}>Form validity: {`${valid}`}</p>
+              <button>Submit</button>
+            </form>
+          )}
+        </Form>
+      )
+    }}
+  </Story>
+</Preview>
+
+<br />
+<br />
+
+## Linear Multi Step Form
+
+With a multi-step form, it's pretty much the same. We recommend keeping the steps and fields config separate, connecting the fields via a `fieldIds` property, like so:
+
+#### Example Config
+```
+const steps = [
+  {
+    id: 'one',
+    heading: 'Step 1',
+    fieldIds: ['name', 'age', 'gender'],
+    entryPoint: true,
+    nextId: 'two'
+  },
+  {
+    id: 'two',
+    heading: 'Step 2',
+    fieldIds: ['comments']
+  }
+]
+
+const fields = [
+  {
+    id: 'name',
+    required: true,
+    props: {
+      label: 'Name'
+    }
+  },
+  {
+    id: 'age',
+    required: true,
+    props: {
+      label: 'Age',
+      type: 'number'
+    }
+  },
+  {
+    id: 'gender',
+    required: true,
+    props: {
+      label: 'Gender',
+      type: 'select',
+      options: [
+        { value: 'male', label: 'Male' },
+        { value: 'female', label: 'Female' },
+      ]
+    }
+  },
+  {
+    id: 'comments',
+    required: true,
+    props: {
+      label: 'Comments'
+    }
+  }
+]
+```
+
+#### Result
+Like above, we `map()` over the steps, *then* the fields (via a `filter()`), passing in your props to each field like we did before. **Enter some values** to see the next step render when all the fields are valid. Click submit to see the final form object.
+
+<Preview>
+  <Story name='Multi-Step'>
+    {() => {
+      const steps = [
+        {
+          id: 'one',
+          heading: 'Step 1',
+          fieldIds: ['name', 'age', 'gender'],
+          entryPoint: true,
+          nextId: 'two'
+        },
+        {
+          id: 'two',
+          heading: 'Step 2',
+          fieldIds: ['comments']
+        }
+      ]
+      const fields = [
+        {
+          id: 'name',
+          required: true,
+          props: {
+            label: 'Name'
+          }
+        },
+        {
+          id: 'age',
+          required: true,
+          props: {
+            label: 'Age',
+            type: 'number'
+          }
+        },
+        {
+          id: 'gender',
+          required: true,
+          props: {
+            label: 'Gender',
+            type: 'select',
+            options: [
+              { value: 'male', label: 'Male' },
+              { value: 'female', label: 'Female' },
+            ]
+          }
+        },
+        {
+          id: 'comments',
+          required: true,
+          props: {
+            label: 'Comments'
+          }
+        }
+      ]
+      return (
+        <Form onSubmit={(formData) => alert(JSON.stringify(formData))}>
+          {({ valid, handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              {steps.map((step) => (
+                <Step key={`step-${step.id}`} {...step}>
+                  {({ valid }) => 
+                    <fieldset>
+                      <legend>{step.heading}</legend>
+                      {fields.filter(({ id }) => step.fieldIds.includes(id)).map(({ props, ...other }) => (
+                        <Field key={`field-${other.id}`} {...other}>{(field) => props.type === 'select' 
+                          ? <Select {...props} {...field} /> 
+                          : <Input {...props} {...field} />}
+                        </Field>
+                      ))}
+                      <p style={{ color: valid ? 'green' : 'red'}}>Step validity: {`${valid}`}</p>
+                    </fieldset>
+                  }
+                </Step>
+              ))}
+              <p style={{ color: valid ? 'green' : 'red'}}>Form validity: {`${valid}`}</p>
+              <button>Submit</button>
+            </form>
+          )}
+        </Form>
+      )
+    }}
+  </Story>
+</Preview>

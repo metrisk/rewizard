@@ -1,0 +1,170 @@
+import { Fragment } from 'react'
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import { Form } from '../index'
+import { Step } from '../index'
+import { Field } from '../index'
+import { Input } from '../components/Input'
+import { Select } from '../components/Select'
+
+<Meta title='Examples|Non-Linear Forms' component={null} />
+
+# Non-Linear Forms
+
+Sometimes we want to direct the user down different paths based on their input values.
+
+## Multi Step
+
+A non-linear multi-step form is much easier to set up using a config array, similar to what we did in [Using Config](/rewizard/?path=/docs/examples-using-config--single-step)
+
+The only difference is instead of passing a string as the `nextId` for each step, we can pass an array of objects to the `next` property. See the [step docs](/rewizard/?path=/docs/components-step--page) for more information. An example of a non-linear form is below. Try choosing from the different options to see the different routes!
+
+<Preview>
+  <Story name='Multi-Step'>
+    {() => {
+      const steps = [
+        {
+          id: 'details',
+          entryPoint: true,
+          heading: 'Step 1 - Food group',
+          fieldIds: ['food-group'],
+          next: [
+            { fieldId: 'food-group', value: 'meat', nextId: 'meat' },
+            { fieldId: 'food-group', value: 'veg', nextId: 'veg' },
+          ]
+        },
+        {
+          id: 'meat',
+          heading: 'Step 2 - Meat',
+          fieldIds: ['animal'],
+          next: [
+            { fieldId: 'animal', value: 'cow', nextId: 'cow' },
+            { fieldId: 'animal', value: 'pig', nextId: 'pig' },
+          ]
+        },
+        {
+          id: 'veg',
+          heading: 'Step 2 - Veg',
+          fieldIds: ['type'],
+          next: [
+            { fieldId: 'type', value: 'root', nextId: 'root' },
+            { fieldId: 'type', value: 'leafy', nextId: 'leafy' },
+          ]
+        },
+        {
+          id: 'cow',
+          heading: 'Step 3 - Cow',
+          fieldIds: ['cut'],
+          nextId: 'end'
+        },
+        {
+          id: 'pig',
+          heading: 'Step 3 - Pig',
+          fieldIds: ['cut'],
+          nextId: 'end'
+        },
+        {
+          id: 'root',
+          heading: 'Step 3 - Root Veg',
+          fieldIds: ['name'],
+          nextId: 'end'
+        },
+        {
+          id: 'leafy',
+          heading: 'Step 3 - Leafy Veg',
+          fieldIds: ['name'],
+          nextId: 'end'
+        },
+        {
+          id: 'end',
+          heading: 'Step 4 - End',
+          fieldIds: ['notes']
+        }
+      ]
+      const fields = [
+        {
+          id: 'food-group',
+          required: true,
+          props: {
+            label: 'Food Group',
+            type: 'select',
+            options: [
+              { value: 'veg', label: 'Veg' },
+              { value: 'meat', label: 'Meat' },
+            ]
+          }
+        },
+        {
+          id: 'animal',
+          required: true,
+          props: {
+            label: 'Animal',
+            type: 'select',
+            options: [
+              { value: 'cow', label: 'Cow' },
+              { value: 'pig', label: 'Pig' },
+            ]
+          }
+        },
+        {
+          id: 'type',
+          required: true,
+          props: {
+            label: 'Type',
+            type: 'select',
+            options: [
+              { value: 'leafy', label: 'Leafy' },
+              { value: 'root', label: 'Root' },
+            ]
+          }
+        },
+        {
+          id: 'cut',
+          required: true,
+          props: {
+            label: 'Cut'
+          }
+        },
+        {
+          id: 'name',
+          required: true,
+          props: {
+            label: 'Name'
+          }
+        },
+        {
+          id: 'notes',
+          required: true,
+          props: {
+            label: 'Notes'
+          }
+        }
+      ]
+      return (
+        <Form onSubmit={(formData) => alert(JSON.stringify(formData))}>
+          {({ valid, handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              {steps.map((step) => (
+                <Step key={`step-${step.id}`} {...step}>
+                  {({ valid }) => 
+                    <fieldset>
+                      <legend>{step.heading}</legend>
+                      {fields.filter((x) => step.fieldIds.includes(x.id)).map(({ props, ...other }) => (
+                        <Field key={`field-${other.id}`} {...other}>{(field) => props.type === 'select' 
+                          ? <Select {...props} {...field} /> 
+                          : <Input {...props} {...field} />}
+                        </Field>
+                      ))}
+                      <p style={{ color: valid ? 'green' : 'red'}}>Step validity: {`${valid}`}</p>
+                    </fieldset>
+                  }
+                </Step>
+              ))}
+              <p style={{ color: valid ? 'green' : 'red'}}>Form validity: {`${valid}`}</p>
+              <button>Submit</button>
+            </form>
+          )}
+        </Form>
+      )
+    }}
+  </Story>
+</Preview>

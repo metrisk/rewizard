@@ -1,0 +1,81 @@
+import { Fragment } from 'react'
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import { Form } from '../index'
+import { Step } from '../index'
+import { Field } from '../index'
+import { Input } from '../components/Input'
+import { Select } from '../components/Select'
+
+<Meta title='Examples|Linear Forms' component={null} />
+
+# Linear Forms
+
+Most forms are pretty basic. Here are some examples of simple, linear forms!
+
+>**PLEASE NOTE:** The examples on this page illustrate building out your forms the "long way", however we would recommend using a [config](/rewizard/?path=/docs/examples-using-config--single-step) object as it's a bit more concise, especially if you have a lot of fields!
+
+<br />
+
+## Single Step
+The simplest implementation of the Form contains just a single step with some fields. Enter some values and click submit to see the final form object.
+
+<Preview>
+  <Story name='Single-Step'>
+    <Form onSubmit={(formData) => alert(JSON.stringify(formData))}>
+      {({ valid, handleSubmit }) => (
+        <form onSubmit={handleSubmit}>
+          <fieldset>
+            <legend>Basic Form</legend>
+            <Field id={'name'} required>{(field) => <Input label={'Name'} {...field} />}</Field>
+            <Field id={'age'} required>{(field) => <Input label={'Age'} type={'number'} {...field} />}</Field>
+            <Field id={'gender'} required>{(field) => 
+              <Select label={'Gender'} options={[{ value: 'male', label: 'Male'}, {value: 'female', label: 'Female'}]} {...field} />}
+            </Field>
+          </fieldset>
+          <p style={{ color: valid ? 'green' : 'red'}}>Form validity: {`${valid}`}</p>
+          <button>Submit</button>
+        </form>
+      )}
+    </Form>
+  </Story>
+</Preview>
+
+<br />
+
+## Multi Step
+The same as above, but with two steps. Initially, the next step will only render when the previous step becomes valid (which in this case is when all fields have a value). However, subsequent steps will not disappear if the previous step were to become invalid, this is to prevent loss of data. Start typing a value in each field to see this in action.
+
+<Preview>
+  <Story name='Multi-Step'>
+    <Form onSubmit={(formData) => alert(JSON.stringify(formData))}>
+      {({ valid, handleSubmit }) => (
+        <form onSubmit={handleSubmit}>
+          <Step id={'one'} entryPoint fieldIds={['name', 'age', 'gender']} nextId={'two'}>
+            {({ valid }) => 
+              <fieldset>
+                <legend>Step 1</legend>
+                <Field id={'name'} required>{(field) => <Input label={'Name'} {...field} />}</Field>
+                <Field id={'age'} required>{(field) => <Input label={'Age'} type={'number'} {...field} />}</Field>
+                <Field id={'gender'} required>{(field) => 
+                  <Select label={'Gender'} options={[{ value: 'male', label: 'Male'}, {value: 'female', label: 'Female'}]} {...field} />}
+                </Field>
+                <p style={{ color: valid ? 'green' : 'red'}}>Step validity: {`${valid}`}</p>
+              </fieldset>
+            }
+          </Step>
+          <Step id={'two'} fieldIds={['comments']}>
+            {({ valid }) => 
+              <fieldset>
+                <legend>Step 2</legend>
+                <Field id={'comments'} required>{(field) => <Input label={'Comments'} {...field} />}</Field>
+                <p style={{ color: valid ? 'green' : 'red'}}>Step validity: {`${valid}`}</p>
+              </fieldset>
+            }
+          </Step>
+          <p style={{ color: valid ? 'green' : 'red'}}>Form validity: {`${valid}`}</p>
+          <button>Submit</button>
+        </form>
+      )}
+    </Form>
+  </Story>
+</Preview>

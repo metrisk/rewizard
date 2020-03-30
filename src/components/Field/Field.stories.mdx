@@ -1,0 +1,39 @@
+import { Meta, Props } from '@storybook/addon-docs/blocks'
+import { Field } from '../Field'
+
+<Meta title='Components|Field' component={Field} />
+
+# Field Component
+The field component is used to wrap [controlled inputs](https://reactjs.org/docs/forms.html#controlled-components) to connect them to the main form state. Each field must be a descendent of the main [form](/rewizard/?path=/docs/components-form--page) wrapper.
+
+```js
+<Field id={'field-one'}>
+  {({ value, onChange }) => <input value={value || ''} onChange={(e) => onChange(e.target.value)} />}
+</Field>
+```
+
+## Props
+| Prop | Description | Example |
+|:-|:-|:--|
+| id | A unique id for the field | `one` |
+| required | Whether this is a required field or not | `true` |
+| validation | A function to validate the value of the field. First argument is the whole fields option. Second is the value of the current field. | `(fields, value) => fields.age.value > 20 && value !== null` |
+| prereq | A prerequisite that has to be fulfilled before this field will be shown | `(fields) => fields.age.value > 20` |
+
+<br />
+
+## Prop Types
+<Props of={Field} />
+
+<br />
+
+## Context Values
+Using [Render Props](https://reactjs.org/docs/render-props.html) means we can access the field's state within the component. The field exposes the following context values:
+
+| Value | Type | Description |
+|:-|:-|:-|
+| value | *String* | The current value of the field. This **must** be passed to your child [input](/rewizard/?path=/docs/components-input--page) component and used to control the input's value. |
+| valid | *Boolean* | Whether the field is currently valid |
+| onChange | *Function* | This function **must** be connected to your child [input](/rewizard/?path=/docs/components-input--page) component and called when the input changes. |
+
+<br />

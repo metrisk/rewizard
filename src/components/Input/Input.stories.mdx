@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+import { Input } from '../Input'
+
+<Meta title='Components|Input' component={Input} />
+
+# Input Component
+The input component is not part of ReWizard - but this page demonstrates how to hook your own components up. It can be a textfield, textarea or select box, or anything that accepts a user value. The only requirements are that it is rendered as a child of the [field](/rewizard/?path=/docs/components-field--page) component and consumes the `value` and `onChange` props like in this example:
+
+```
+const Input = ({ value, onChange }) => (
+   <input value={value || ''} onChange={(e) => onChange(e.target.value)} />
+)
+```

@@ -1,0 +1,40 @@
+import { Fragment } from 'react'
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import { Form } from '../index'
+import { Step } from '../index'
+import { Field } from '../index'
+import { Input } from '../components/Input'
+
+<Meta title='Examples|Field Prerequisites' component={null} />
+
+# Field Prerequisites
+
+A common form requirement is to have a field which is dependent on another field, or one that only displays when a certain criteria is met. The `prereq` prop allows you to specify this as a function. In this example, the child and adult fields are dependent on the value entered in the age field. The function must return a boolean.
+
+```
+const prereq = (fields) => fields.age.value > 16
+```
+
+## Single Step
+Ensure that the field you want to check appears before the one with the requirement (this is logical, really!).
+
+<Preview>
+  <Story name='Single-Step'>
+    <Form onSubmit={(formData) => alert(JSON.stringify(formData))}>
+      {({ valid, handleSubmit }) => (
+        <form onSubmit={handleSubmit}>
+          <fieldset>
+            <legend>Basic Form</legend>
+            <Field id={'name'} required>{(field) => <Input label={'Name'} {...field} />}</Field>
+            <Field id={'age'} required>{(field) => <Input label={'Age'} type={'number'} {...field} />}</Field>
+            <Field id={'child'} prereq={(fields) => fields.age.value <= 16} required>{(field) => <Input label={'Child'} {...field} />}</Field>
+            <Field id={'adult'} prereq={(fields) => fields.age.value > 16} required>{(field) => <Input label={'Adult'} {...field} />}</Field>
+          </fieldset>
+          <p style={{ color: valid ? 'green' : 'red'}}>Form validity: {`${valid}`}</p>
+          <button>Submit</button>
+        </form>
+      )}
+    </Form>
+  </Story>
+</Preview>
+

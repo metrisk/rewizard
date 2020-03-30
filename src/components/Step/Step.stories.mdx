@@ -1,0 +1,40 @@
+import { Meta, Props } from '@storybook/addon-docs/blocks'
+import { Step } from '../Step'
+
+<Meta title='Components|Step' component={Step} />
+
+# Step Component
+The step component can be used to wrap fields to group them into multiple steps or form stages. It must be a descendent of the main [form](/rewizard/?path=/docs/components-form--page) wrapper.
+
+```
+<Step id={'step-one'} entryPoint nextId={'step-two'}>
+  {({ valid, nextId }) => /* Render fields */}
+</Step>
+```
+
+## Props
+| Prop | Description | Example |
+|:-|:-|:--|
+| id | A unique id for the step | `one` |
+| entryPoint | Set this to true only **once** on the step you wish to be the first | `false` |
+| fieldIds | List the fieldIds of all fields within this step | `['name', 'age', 'gender']` |
+| next | An array of objects to conditionally render the next step | `[{ fieldId: 'name', value: 'goToTwo', nextId: 'two' }]` |
+| nextId | A string that matches the ID of the step you wish to come next, it can be omitted on the last step | `two` |
+
+<br />
+
+## Prop Types
+<Props of={Step} />
+
+<br />
+
+## Context Values
+Using [Render Props](https://reactjs.org/docs/render-props.html) means we can access the step's state within the component. The step exposes the following context values:
+
+| Value | Type | Description |
+|:-|:-|:-|
+| valid | *Boolean* | Whether the current step is valid - useful for displaying error messages or preventing a user from proceeding |
+| prevId | *String* | The id of the previous step - useful for creating links between steps. |
+| nextId | *String* | The id of the next step - useful for creating links between steps. |
+
+<br />

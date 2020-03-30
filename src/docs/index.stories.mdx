@@ -1,0 +1,97 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='Getting Started|Introduction' component={null} />
+
+# Introduction
+
+ReWizard makes it easy to collect data from forms in React!
+
+- Easy data collection - a single source-of-truth for your form data
+- Flexible & composable - control how you render your fields/inputs
+- Style agnostic - no added styles to clutter or interfere with your project
+- Create multi-step forms - divide your forms into smaller, easily digestible steps
+- Create conditional multi-step forms - guide users to different steps based on their input
+- TypeScript compatible - types included
+
+> **PLEASE NOTE:** These docs are built with an awesome cool new 'docs' feature of [Storybook](https://github.com/storybookjs/storybook), using [MDX](https://mdxjs.com/). We are aware that some of the code example indentation is a little off, so bear with us until there's an update!
+
+### Requirements: 
+- [Node.js](https://nodejs.org/) v9+
+- [React.js](https://reactjs.org/) v16+
+
+### Install
+This package is not published to npm just yet but you can just install directly from Github:
+```sh 
+$ npm i git+ssh://git@github.com:metrisk/rewizard.git
+```
+
+Then import into your React project.
+
+```js
+import { Form, Field } from 'rewizard'
+
+const Input = ({ name, label, value, onChange }: any) => (
+  <div>
+    <label>{label}</label>
+    <input name={name} value={value || ''} onChange={(e) => onChange(e.target.value)} />
+  </div>
+)
+
+const App = () => (
+  <Form onSubmit={(formData) => alert(JSON.stringify(formData))}>
+    {({ valid, handleSubmit }) => (
+      <form onSubmit={handleSubmit}>
+        <Field id={'name'} required>{(field) => <Input label={'Name'} {...field} />}</Field>
+        <Field id={'age'} required>{(field) => <Input label={'Age'} {...field} />}</Field>
+        <Field id={'gender'} required>{(field) => <Input label={'Gender'} {...field} />}</Field>
+        <p style={{ color: valid ? 'green' : 'red'}}>Form validity: {`${valid}`}</p>
+        <button>Submit</button>
+      </form>
+    )}
+  </Form>
+)
+
+ReactDOM.render(<App />, document.getElementById('app'))
+```
+
+Please explore our docs for more detailed usage 🧙‍♂️.
+
+<br />
+<br />
+
+## Contributing
+
+To contribute, clone the repo from [Github](https://github.com/metrisk/rewizard), install dependencies (`npm i`) and run:
+
+### Develop
+```sh
+$ npm run dev
+```
+
+### Build
+```sh
+$ npm run build
+```
+
+Build individual elements:
+
+| Command | Description |
+|:-|:-|
+| `$ npm run build:components` | Build components ready for publishing |
+| `$ npm run build:docs` | Build just the storybook documentation |
+
+<br/>
+
+### Testing
+Run all unit and integration tests:
+```sh
+$ npm run test
+```
+
+Run individual tests:
+
+| Command | Description |
+|:-|:-|
+| `$ npm run test:unit` | Run just unit tests |
+| `$ npm run test:cypress` | Run in-browser integration tests |
+| `$ npm run test:coverage` | Run tests with coverage report |
