@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/metrisk/rewizard/badge.svg?branch=master)](https://coveralls.io/github/metrisk/rewizard?branch=master)
 
 ## Introduction
-Rewizard makes it easy to collect data from forms in React! Please view all demos and full documentation on our [Github Pages](https://metrisk.github.io/rewizard/?path=/docs/getting-started-introduction--page).
+Rewizard makes it easy to collect data from forms in React! Please view all demos and full documentation on our [Github Pages](https://metrisk.github.io/rewizard/).
 
 ## Contributing
 
