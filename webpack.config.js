@@ -26,7 +26,7 @@ const config = (env) => {
   return {
     context: root,
     mode: mode, // For hooks to work whilst developing locally - https://github.com/facebook/react/issues/13991,
-    devtool: dev && 'inline-source-map',
+    devtool: dev && 'cheap-module-eval-source-map',
     devServer: {
       contentBase: dist,
       historyApiFallback: true,
