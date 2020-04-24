@@ -1,4 +1,8 @@
+const path = require('path')
 const createCompiler = require('@storybook/addon-docs/mdx-compiler-plugin')
+
+const root = path.resolve(__dirname, '..')
+const src = `${root}/src/`
 
 module.exports = ({ config }) => {
   config.module.rules.push({
@@ -15,7 +19,13 @@ module.exports = ({ config }) => {
       },
     ],
   })
-  config.resolve.extensions.push('.ts', '.tsx');
+
+  config.resolve.extensions.push('.ts', '.tsx')
+  config.resolve.alias = {
+    ...config.resolve.alias,
+    '@app': `${src}/`,
+    '@components': `${src}/components/`,
+  }
 
   config.module.rules.push({
     test: /\.(scss)$/,
