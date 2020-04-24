@@ -11,28 +11,28 @@ import { validateStep, getNextId, getPrevId, getInvalidatedSteps, excludeFromObj
  * @param {Any} value
  * The value of the field
  */
-const updateStep = (fields: IForm.IFieldsState, config: any) => (prev: IForm.IStepsState) => {
+const updateStep = (fields: IForm.IFieldsState, step: any) => (prev: IForm.IStepsState) => {
   /**
    * Process the current step's properties
    */
-  const valid = validateStep(prev[config.id], fields)
-  const prevId = getPrevId(prev, config.id)
-  const nextId = getNextId(config.next, config.nextId, fields)
-  const invalidate = getInvalidatedSteps(prev, config.id, nextId)
+  const valid = validateStep(prev[step.id], fields)
+  const prevId = getPrevId(prev, step.id)
+  const nextId = getNextId(step.next, step.nextId, fields)
+  const invalidate = getInvalidatedSteps(prev, step.id, nextId)
 
   const thisStep: IStep.IState = {
-    fieldIds: config.fieldIds,
+    fieldIds: step.fieldIds,
     valid,
     invalidate,
     prevId,
     nextId,
-    next: config.next || null
+    next: step.next || null
   }
 
   const allSteps = {
     ...prev,
-    [config.id]: {
-      ...prev[config.id],
+    [step.id]: {
+      ...prev[step.id],
       ...thisStep
     }
   }
@@ -41,8 +41,8 @@ const updateStep = (fields: IForm.IFieldsState, config: any) => (prev: IForm.ISt
    * Determine whether the current step should remain
    * in the global state
    */
-  const show = config.entryPoint || prev[prevId]?.valid || prev[config.id]
-  const hide = [...invalidate, !show && config.id]
+  const show = step.entryPoint || prev[prevId]?.valid || prev[step.id]
+  const hide = [...invalidate, !show && step.id].filter(Boolean)
   const final = excludeFromObj(allSteps, hide)
 
   /**

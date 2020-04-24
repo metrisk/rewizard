@@ -7,6 +7,15 @@ import { updateStep } from './'
 
 describe('----- Update Step -----', () => {
   it('Should load the first step into the global state', () => {
+    const step = {
+      id: 'one',
+      entryPoint: true,
+      fieldIds: ['one'],
+      nextId: 'end',
+      prevId: null,
+      valid: false,
+      invalidate: null
+    }
     const prev = {}
     const fields = {
       one: {
@@ -15,14 +24,8 @@ describe('----- Update Step -----', () => {
         stepId: 'one',
       }
     }
-    const config = {
-      id: 'one',
-      entryPoint: true,
-      fieldIds: ['one'],
-      nextId: 'end'
-    }
 
-    expect(updateStep(fields, config)(prev)).to.deep.equal({
+    expect(updateStep(fields, step)(prev)).to.deep.equal({
       one: {
         fieldIds: ['one'],
         invalidate: [],
@@ -35,6 +38,14 @@ describe('----- Update Step -----', () => {
   })
 
   it('Should load the next step into the global state - linear', () => {
+    const step = {
+      id: 'two',
+      fieldIds: ['two'],
+      nextId: 'end',
+      prevId: null,
+      valid: false,
+      invalidate: null
+    }
     const prev = {
       one: {
         fieldIds: ['one'],
@@ -56,13 +67,8 @@ describe('----- Update Step -----', () => {
         stepId: 'two',
       }
     }
-    const config = {
-      id: 'two',
-      fieldIds: ['two'],
-      nextId: 'end'
-    }
 
-    expect(updateStep(fields, config)(prev)).to.deep.equal({
+    expect(updateStep(fields, step)(prev)).to.deep.equal({
       one: {
         fieldIds: ['one'],
         invalidate: [],
@@ -83,6 +89,14 @@ describe('----- Update Step -----', () => {
   
 
   it('Should load the next step into the global state - non-linear', () => {
+    const step = {
+      id: 'one',
+      fieldIds: ['one'],
+      next: [
+        { fieldId: 'one', value: 'two_a', nextId: 'two_a'},
+        { fieldId: 'one', value: 'two_b', nextId: 'two_b'},
+      ]
+    }
     const prev = {
       one: {
         entryPoint: true,
@@ -109,16 +123,8 @@ describe('----- Update Step -----', () => {
         stepId: 'two_a',
       }
     }
-    const config = {
-      id: 'one',
-      fieldIds: ['one'],
-      next: [
-        { fieldId: 'one', value: 'two_a', nextId: 'two_a'},
-        { fieldId: 'one', value: 'two_b', nextId: 'two_b'},
-      ]
-    }
 
-    expect(updateStep(fields, config)(prev)).to.deep.equal({
+    expect(updateStep(fields, step)(prev)).to.deep.equal({
       one: {
         entryPoint: true,
         fieldIds: ['one'],

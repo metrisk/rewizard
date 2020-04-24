@@ -12,6 +12,7 @@ declare namespace IForm {
     config?: IConfig
     children: (value: {
       valid: boolean
+      currentStep: string
       handleSubmit: (formData: any) => void
     }) => React.ReactElement | React.ReactElement[]
   }

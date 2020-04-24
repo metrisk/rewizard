@@ -2,6 +2,7 @@ declare namespace IStep {
   interface IProps {
     id: string
     entryPoint?: boolean
+    submitPoint?: boolean
     fieldIds: string[]
     next?: {
       fieldId: string
@@ -9,7 +10,14 @@ declare namespace IStep {
       nextId: string
     }[]
     nextId?: string
-    children: (value: { valid: boolean; prevId: string; nextId: string }) => React.ReactElement
+    children: (value: {
+      valid: boolean
+      submitPoint: boolean
+      nextStep: () => void
+      prevStep: () => void
+      prevId: string
+      nextId: string
+    }) => React.ReactElement
   }
 
   interface IState {

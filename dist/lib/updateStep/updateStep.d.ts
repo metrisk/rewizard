@@ -8,5 +8,5 @@ import IForm from '../../context/Form/types';
  * @param {Any} value
  * The value of the field
  */
-declare const updateStep: (fields: IForm.IFieldsState, config: any) => (prev: IForm.IStepsState) => any;
+declare const updateStep: (fields: IForm.IFieldsState, step: any) => (prev: IForm.IStepsState) => any;
 export default updateStep;

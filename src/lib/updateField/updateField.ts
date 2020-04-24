@@ -11,24 +11,24 @@ import { validateField, getCurrentStepId, getRemovedFields, excludeFromObj } fro
  * @param {Any} value
  * The value of the field
  */
-const updateField = (steps: IForm.IStepsState, config: any) => (prev: IForm.IFieldsState) => {
+const updateField = (steps: IForm.IStepsState, field: any) => (prev: IForm.IFieldsState) => {
   /**
    * Process the current field's properties
    */
-  const valid = validateField(prev, config.value, config.validation, config.required)
-  const stepId = getCurrentStepId(steps, config.id)
+  const valid = validateField(prev, field.value, field.validation, field.required)
+  const stepId = getCurrentStepId(steps, field.id)
   const removed = getRemovedFields(steps, prev)
 
   const thisField: IField.IState = {
-    value: config?.value,
+    value: field?.value,
     valid,
     stepId
   }
 
   const allFields = {
     ...prev,
-    [config.id]: {
-      ...prev[config.id],
+    [field.id]: {
+      ...prev[field.id],
       ...thisField
     }
   }
@@ -37,8 +37,8 @@ const updateField = (steps: IForm.IStepsState, config: any) => (prev: IForm.IFie
    * Determine whether the current field should remain
    * in the global state
    */
-  const show = config.prereq(allFields)
-  const hide = [...removed, !show && config.id]
+  const show = field.prereq(allFields)
+  const hide = [...removed, !show && field.id]
   const final = excludeFromObj(allFields, hide)
   const same = JSON.stringify(prev) == JSON.stringify(final)
 

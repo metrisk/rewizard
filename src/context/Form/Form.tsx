@@ -72,6 +72,13 @@ const Form: React.FC<IForm.IProps> = ({ savedData, onSubmit, config, children })
     setValid(valid)
   }, [fields])
 
+  useEffect(() => {
+    const stepIds = Object.keys(steps)
+    if (currentStep === null && stepIds.length > 0) {
+      setCurrentStep(stepIds[0])
+    }
+  }, [steps])
+
   return (
     <FormContext.Provider
       value={{
