@@ -2,9 +2,14 @@ import IStep from '../../components/Step/types'
 import IField from '../../components/Field/types'
 
 declare namespace IForm {
+  interface IConfig {
+    autoStep?: boolean
+  }
+
   interface IProps {
     savedData?: { [key: string]: any }
     onSubmit: (formData: { [key: string]: any }) => void
+    config?: IConfig
     children: (value: {
       valid: boolean
       handleSubmit: (formData: any) => void
@@ -16,6 +21,7 @@ declare namespace IForm {
     steps: IStepsState
     fields: IFieldsState
     valid: boolean
+    autoStep: boolean
     setCurrentStep: (id: string) => void
     setSteps: (obj: any) => void
     setFields: (obj: any) => void

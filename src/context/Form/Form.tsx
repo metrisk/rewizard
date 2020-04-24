@@ -6,11 +6,16 @@ import { FormContext } from '.'
 /**
  * Form
  */
-const Form: React.FC<IForm.IProps> = ({ savedData, onSubmit, children }) => {
-  const [currentStep, setCurrentStep] = useState<string>('')
+const Form: React.FC<IForm.IProps> = ({ savedData, onSubmit, config, children }) => {
+  const [currentStep, setCurrentStep] = useState<string>(null)
   const [steps, setSteps] = useState<IForm.IStepsState>({})
   const [fields, setFields] = useState<IForm.IFieldsState>({})
   const [valid, setValid] = useState(false)
+
+  const resolvedConfig = {
+    autoStep: true,
+    ...config
+  }
 
   /**
    * Shape an object to form data format
@@ -69,7 +74,17 @@ const Form: React.FC<IForm.IProps> = ({ savedData, onSubmit, children }) => {
 
   return (
     <FormContext.Provider
-      value={{ currentStep, steps, fields, valid, setCurrentStep, setSteps, setFields, handleSubmit }}
+      value={{
+        currentStep,
+        steps,
+        fields,
+        valid,
+        autoStep: resolvedConfig.autoStep,
+        setCurrentStep,
+        setSteps,
+        setFields,
+        handleSubmit
+      }}
     >
       <FormContext.Consumer>{children}</FormContext.Consumer>
     </FormContext.Provider>

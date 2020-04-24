@@ -9,6 +9,7 @@ const FormContext = createContext<IForm.IContext>({
   steps: {},
   fields: {},
   valid: false,
+  autoStep: true,
   setCurrentStep: () => {},
   setSteps: () => {},
   setFields: () => {},

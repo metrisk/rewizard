@@ -13,7 +13,7 @@ const Field: React.FC<IField.IProps> = ({
   prereq = () => true,
   children
 }) => {
-  const { currentStep, steps, fields, setCurrentStep, setFields } = useContext(FormContext)
+  const { currentStep, steps, autoStep, fields, setCurrentStep, setFields } = useContext(FormContext)
 
   /**
    * Handle the change of an input
@@ -22,11 +22,12 @@ const Field: React.FC<IField.IProps> = ({
    * The value of the field
    */
   const handleChange = (value: any = null) => {
-    const sameStep = currentStep === fields[id]?.stepId
+    const fieldStepId = fields[id]?.stepId
+    const sameStep = currentStep === fieldStepId
     setFields(updateField(steps, { id, required, validation, prereq, value }))
 
     if (sameStep) return
-    setCurrentStep(fields[id]?.stepId || 'one')
+    if (autoStep && fieldStepId) setCurrentStep(fieldStepId)
   }
 
   /**
