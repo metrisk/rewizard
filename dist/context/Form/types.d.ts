@@ -12,7 +12,7 @@ declare namespace IForm {
         onSubmit: (formData: {
             [key: string]: any;
         }) => void;
-        config: IConfig;
+        config?: IConfig;
         children: (value: {
             valid: boolean;
             currentStep: string;
