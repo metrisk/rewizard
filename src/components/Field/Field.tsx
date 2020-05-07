@@ -49,12 +49,15 @@ const Field: React.FC<IField.IProps> = ({
    */
   if (!fields[id]) return null
 
-  return children({
-    name: id,
-    valid: fields[id].valid,
-    value: fields[id].value,
-    onChange: (value) => handleChange(value)
-  })
+  return children(
+    {
+      name: id,
+      valid: fields[id].valid,
+      value: fields[id].value,
+      onChange: (value) => handleChange(value)
+    },
+    fields
+  )
 }
 
 export default Field

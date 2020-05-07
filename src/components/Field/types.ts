@@ -4,12 +4,15 @@ declare namespace IField {
     required?: boolean
     validation?: (fields: { [key: string]: IState }, value: any) => boolean
     prereq?: (fields: { [key: string]: IState }) => boolean
-    children: (value: {
-      name: string
-      value: string
-      valid: boolean
-      onChange: (value: any) => void
-    }) => React.ReactElement
+    children: (
+      value: {
+        name: string
+        value: string
+        valid: boolean
+        onChange: (value: any) => void
+      },
+      fields: { [key: string]: IState }
+    ) => React.ReactElement
   }
 
   interface IState {

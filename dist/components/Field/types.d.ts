@@ -14,6 +14,8 @@ declare namespace IField {
             value: string;
             valid: boolean;
             onChange: (value: any) => void;
+        }, fields: {
+            [key: string]: IState;
         }) => React.ReactElement;
     }
     interface IState {
